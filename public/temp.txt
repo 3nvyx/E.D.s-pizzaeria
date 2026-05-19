@@ -1,0 +1,5 @@
+menu.gif
+└── screenshots/            # Optional folder for project screenshots
+    ├── case1.png
+    ├── case2.png
+    └── case3.png
