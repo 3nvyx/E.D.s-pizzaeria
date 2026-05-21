@@ -1,7 +1,7 @@
 # ---------------------------------------------------------
-# Names: Eric Nguyen & Partner Name
+# Project Name: E.D.S's Pizza Ordering Program
+# Names: Eric Nguyen & Duke Cameron
 # Date: May 19, 2026
-# Program: E.D.S's Pizza Ordering Program
 #
 # Description:
 # This program allows users to order a pizza by selecting
@@ -19,6 +19,7 @@ window.geometry("1000x800")
 window.config(bg="lightyellow")
 
 # Pizza size variable
+# StringVar() is a special Tkinter variable that can be used with widgets
 size = StringVar()
 size.set("Medium")  # default value
 
@@ -27,10 +28,11 @@ crust = StringVar()
 crust.set("Hand-Tossed")  # default value
 
 # Topping variables
+extra_cheese = IntVar()
+pineapple = IntVar()
 pepperoni = IntVar()
 sausage = IntVar()
 mushrooms = IntVar()
-onions = IntVar()
 
 def click():
     subtotal = 0
@@ -45,11 +47,15 @@ def click():
     elif size.get() == "Large":
         subtotal += 14.99
 
-    # -------------------------
-    # ADD TOPPING COSTS
-    # -------------------------
-
+    #toppings list starts with cheese
     toppings_list = ["Cheese"]
+    if extra_cheese.get() == 1:
+        subtotal += 1.25
+        toppings_list.append("Extra Cheese")
+    
+    if pineapple.get() == 1:
+        subtotal += 50
+        toppings_list.append("Pineapple")
 
     if pepperoni.get() == 1:
         subtotal += 1.25
@@ -62,26 +68,17 @@ def click():
     if mushrooms.get() == 1:
         subtotal += 1.25
         toppings_list.append("Mushrooms")
-
-    if onions.get() == 1:
-        subtotal += 1.25
-        toppings_list.append("Onions")
-
-    # -------------------------
-    # CALCULATE TAX & TOTAL
-    # -------------------------
-
+    
+    # calculate total
     tax = subtotal * 0.0875
     total = subtotal + tax
 
-    # -------------------------
-    # CREATE RECEIPT
-    # -------------------------
+    #make receipt
 
     receipt = ""
-    receipt += "------ PIZZA RECEIPT ------\n\n"
-    receipt += f"Pizza Size: {size.get()}\n"
-    receipt += f"Crust Type: {crust.get()}\n"
+    receipt += "Your Reciept...\n\n"
+    receipt += f"Size: {size.get()}\n"
+    receipt += f"Crust: {crust.get()}\n"
     receipt += f"Toppings: {', '.join(toppings_list)}\n\n"
     receipt += f"Subtotal: ${subtotal:.2f}\n"
     receipt += f"Tax: ${tax:.2f}\n"
@@ -90,31 +87,20 @@ def click():
     # Display receipt
     receipt_label.config(text=receipt)
 
-# -------------------------
-# IMAGE
-# -------------------------
-
-# Make sure menu.gif is in the SAME folder
+#menu
 photo = PhotoImage(file="menu.gif")
 
 image_label = Label(window, image=photo)
 image_label.pack(pady=10)
 
-# -------------------------
-# TITLE LABEL
-# -------------------------
-
+#title
 title_label = Label(
     window,
-    text="Pizza Ordering Program",
-    font=("Arial", 20, "bold"),
+    text="E.D.S's Pizzeria",
+    font=("Arial", 20, "bold"), #can change font later
     bg="lightyellow"
 )
 title_label.pack()
-
-# -------------------------
-# PIZZA SIZE SECTION
-# -------------------------
 
 size_label = Label(
     window,
@@ -198,6 +184,13 @@ toppings_label.pack(pady=(10, 0))
 
 Checkbutton(
     window,
+    text="Extra Cheese",
+    variable=extra_cheese,
+    bg="lightyellow"
+).pack()
+
+Checkbutton(
+    window,
     text="Pepperoni",
     variable=pepperoni,
     bg="lightyellow"
@@ -219,14 +212,11 @@ Checkbutton(
 
 Checkbutton(
     window,
-    text="Onions",
-    variable=onions,
+    text="Pineapple",
+    variable=pineapple,
     bg="lightyellow"
 ).pack()
 
-# -------------------------
-# SUBMIT BUTTON
-# -------------------------
 
 submit_button = Button(
     window,
@@ -236,9 +226,6 @@ submit_button = Button(
 )
 submit_button.pack(pady=15)
 
-# -------------------------
-# RECEIPT SECTION
-# -------------------------
 
 receipt_label = Label(
     window,
@@ -252,9 +239,5 @@ receipt_label = Label(
     relief="solid"
 )
 receipt_label.pack(pady=10)
-
-# -------------------------
-# MAIN LOOP
-# -------------------------
 
 window.mainloop()
