@@ -1,5 +1,5 @@
 # ---------------------------------------------------------
-# Names: Eric Nguyen & Partner Name
+# Names: Eric Nguyen & Duke Caperon
 # Date: May 19, 2026
 # Program: Pizza Ordering Program
 #
