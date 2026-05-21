@@ -10,22 +10,13 @@
 # then displays a receipt on the screen.
 # ---------------------------------------------------------
 
-# -------------------------
-# IMPORTS
-# -------------------------
 from tkinter import *
 
-# -------------------------
-# WINDOW SETUP
-# -------------------------
+#window set-up
 window = Tk()
 window.title("Pizza Ordering Program")
 window.geometry("800x700")
 window.config(bg="lightyellow")
-
-# -------------------------
-# VARIABLES
-# -------------------------
 
 # Pizza size variable
 size = StringVar()
