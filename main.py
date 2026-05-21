@@ -1,7 +1,7 @@
 # ---------------------------------------------------------
-# Names: Eric Nguyen & Duke Caperon
+# Names: Eric Nguyen & Partner Name
 # Date: May 19, 2026
-# Program: Pizza Ordering Program
+# Program: E.D.S's Pizza Ordering Program
 #
 # Description:
 # This program allows users to order a pizza by selecting
@@ -15,7 +15,7 @@ from tkinter import *
 #window set-up
 window = Tk()
 window.title("Pizza Ordering Program")
-window.geometry("800x700")
+window.geometry("1000x800")
 window.config(bg="lightyellow")
 
 # Pizza size variable
@@ -32,20 +32,7 @@ sausage = IntVar()
 mushrooms = IntVar()
 onions = IntVar()
 
-# -------------------------
-# FUNCTIONS
-# -------------------------
-
 def click():
-    """
-    This function runs when the user clicks
-    the submit button.
-    """
-
-    # -------------------------
-    # CALCULATE PIZZA PRICE
-    # -------------------------
-
     subtotal = 0
 
     # Pizza size pricing
