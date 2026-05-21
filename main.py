@@ -19,6 +19,7 @@ window.geometry("1000x800")
 window.config(bg="lightyellow")
 
 # Pizza size variable
+# StringVar() is a special Tkinter variable that can be used with widgets
 size = StringVar()
 size.set("Medium")  # default value
 
@@ -45,11 +46,15 @@ def click():
     elif size.get() == "Large":
         subtotal += 14.99
 
-    # -------------------------
-    # ADD TOPPING COSTS
-    # -------------------------
-
+    #toppings list starts with cheese
     toppings_list = ["Cheese"]
+    if extra_cheese.get() == 1:
+        subtotal += 1.25
+        toppings_list.append("Extra Cheese")
+    
+    if pineapple.get() == 1:
+        subtotal += 50
+        toppings_list.append("Pineapple")
 
     if pepperoni.get() == 1:
         subtotal += 1.25
@@ -62,21 +67,12 @@ def click():
     if mushrooms.get() == 1:
         subtotal += 1.25
         toppings_list.append("Mushrooms")
-
-    if onions.get() == 1:
-        subtotal += 1.25
-        toppings_list.append("Onions")
-
-    # -------------------------
-    # CALCULATE TAX & TOTAL
-    # -------------------------
-
+    
+    # calculate total
     tax = subtotal * 0.0875
     total = subtotal + tax
 
-    # -------------------------
-    # CREATE RECEIPT
-    # -------------------------
+    #make receipt
 
     receipt = ""
     receipt += "------ PIZZA RECEIPT ------\n\n"
@@ -90,31 +86,20 @@ def click():
     # Display receipt
     receipt_label.config(text=receipt)
 
-# -------------------------
-# IMAGE
-# -------------------------
-
-# Make sure menu.gif is in the SAME folder
+#menu
 photo = PhotoImage(file="menu.gif")
 
 image_label = Label(window, image=photo)
 image_label.pack(pady=10)
 
-# -------------------------
-# TITLE LABEL
-# -------------------------
-
+#title
 title_label = Label(
     window,
-    text="Pizza Ordering Program",
-    font=("Arial", 20, "bold"),
+    text="E.D.S's Pizzeria",
+    font=("Arial", 20, "bold"), #can change font later
     bg="lightyellow"
 )
 title_label.pack()
-
-# -------------------------
-# PIZZA SIZE SECTION
-# -------------------------
 
 size_label = Label(
     window,
@@ -224,9 +209,6 @@ Checkbutton(
     bg="lightyellow"
 ).pack()
 
-# -------------------------
-# SUBMIT BUTTON
-# -------------------------
 
 submit_button = Button(
     window,
@@ -236,9 +218,6 @@ submit_button = Button(
 )
 submit_button.pack(pady=15)
 
-# -------------------------
-# RECEIPT SECTION
-# -------------------------
 
 receipt_label = Label(
     window,
@@ -252,9 +231,5 @@ receipt_label = Label(
     relief="solid"
 )
 receipt_label.pack(pady=10)
-
-# -------------------------
-# MAIN LOOP
-# -------------------------
 
 window.mainloop()
