@@ -184,6 +184,13 @@ toppings_label.pack(pady=(10, 0))
 
 Checkbutton(
     window,
+    text="Extra Cheese",
+    variable=extra_cheese,
+    bg="lightyellow"
+).pack()
+
+Checkbutton(
+    window,
     text="Pepperoni",
     variable=pepperoni,
     bg="lightyellow"
@@ -205,8 +212,8 @@ Checkbutton(
 
 Checkbutton(
     window,
-    text="Onions",
-    variable=onions,
+    text="Pineapple",
+    variable=pineapple,
     bg="lightyellow"
 ).pack()
 
