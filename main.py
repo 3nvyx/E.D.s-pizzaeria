@@ -28,10 +28,11 @@ crust = StringVar()
 crust.set("Hand-Tossed")  # default value
 
 # Topping variables
+extra_cheese = IntVar()
+pineapple = IntVar()
 pepperoni = IntVar()
 sausage = IntVar()
 mushrooms = IntVar()
-onions = IntVar()
 
 def click():
     subtotal = 0
