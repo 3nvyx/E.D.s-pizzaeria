@@ -1,7 +1,7 @@
 # ---------------------------------------------------------
-# Names: Eric Nguyen & Partner Name
+# Project Name: E.D.S's Pizza Ordering Program
+# Names: Eric Nguyen & Duke Cameron
 # Date: May 19, 2026
-# Program: E.D.S's Pizza Ordering Program
 #
 # Description:
 # This program allows users to order a pizza by selecting
