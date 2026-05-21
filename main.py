@@ -76,9 +76,9 @@ def click():
     #make receipt
 
     receipt = ""
-    receipt += "------ PIZZA RECEIPT ------\n\n"
-    receipt += f"Pizza Size: {size.get()}\n"
-    receipt += f"Crust Type: {crust.get()}\n"
+    receipt += "Your Reciept...\n\n"
+    receipt += f"Size: {size.get()}\n"
+    receipt += f"Crust: {crust.get()}\n"
     receipt += f"Toppings: {', '.join(toppings_list)}\n\n"
     receipt += f"Subtotal: ${subtotal:.2f}\n"
     receipt += f"Tax: ${tax:.2f}\n"
