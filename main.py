@@ -111,6 +111,7 @@ title_label = Label(
     bg="lightyellow"
 )
 title_label.place(relx=0.1, rely=0.2)
+
 # 1. Create the main horizontal row
 menu_frame = Frame(window, bg="lightyellow")
 menu_frame.place(relx=0.08, rely=0.32, relwidth=0.84)
@@ -153,19 +154,11 @@ Radiobutton(
 
 Radiobutton(
     size_frame,
-    text="Small - $10.99",
-    variable=size,
-    value="Small",
-    bg="lightyellow"
-).place(relx=0.1, rely=0.55)
-
-Radiobutton(
-    size_frame,
     text="Medium - $12.99",
     variable=size,
     value="Medium",
     bg="lightyellow"
-).place(relx=0.1, rely=0.58)
+).pack(anchor="w", pady=3)
 
 Radiobutton(
     size_frame,
@@ -173,43 +166,43 @@ Radiobutton(
     variable=size,
     value="Large",
     bg="lightyellow"
-).place(relx=0.1, rely=0.61)
+).pack(anchor="w", pady=3)
 
 # -------------------------
 # CRUST SECTION
 # -------------------------
 
 crust_label = Label(
-    size_frame,
+    crust_frame,
     text="Choose Crust Type:",
     font=("Arial", 14),
     bg="lightyellow"
 )
-crust_label.place(relx=0.1, rely=0.65)
+crust_label.pack(anchor="w", pady=(0, 10))
 
 Radiobutton(
-    size_frame,
+    crust_frame,
     text="Hand-Tossed",
     variable=crust,
     value="Hand-Tossed",
     bg="lightyellow"
-).place(relx=0.1, rely=0.7)
+).pack(anchor="w", pady=3)
 
 Radiobutton(
-    size_frame,
+    crust_frame,
     text="Deep-Dish",
     variable=crust,
     value="Deep-Dish",
     bg="lightyellow"
-).place(relx=0.1, rely=0.73)
+).pack(anchor="w", pady=3)
 
 Radiobutton(
-    size_frame,
+    crust_frame,
     text="Thin-Crust",
     variable=crust,
     value="Thin-Crust",
     bg="lightyellow"
-).place(relx=0.1, rely=0.76)
+).pack(anchor="w", pady=3)
 
 # -------------------------
 # TOPPINGS SECTION
@@ -221,35 +214,36 @@ toppings_label = Label(
     font=("Arial", 14),
     bg="lightyellow"
 )
-toppings_label.pack(pady=(10, 0))
+toppings_label.pack(anchor="w", pady=(0, 10))
 
 Checkbutton(
-    window,
+    toppings_frame,
     text="Pepperoni",
     variable=pepperoni,
     bg="lightyellow"
-).pack()
+).pack(anchor="w", pady=3)
 
 Checkbutton(
-    window,
+    toppings_frame,
     text="Sausage",
     variable=sausage,
     bg="lightyellow"
-).pack()
+).pack(anchor="w", pady=3)
 
 Checkbutton(
-    window,
+    toppings_frame,
     text="Mushrooms",
     variable=mushrooms,
     bg="lightyellow"
-).pack()
+).pack(anchor="w", pady=3)
 
 Checkbutton(
-    window,
+    toppings_frame,
     text="Onions",
     variable=onions,
     bg="lightyellow"
-).pack()
+).pack(anchor="w", pady=3)
+
 
 # -------------------------
 # SUBMIT BUTTON
