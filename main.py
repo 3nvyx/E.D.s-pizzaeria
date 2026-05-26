@@ -111,7 +111,7 @@ title_label = Label(
     bg="lightyellow"
 )
 title_label.place(relx=0.1, rely=0.2)
-
+#f
 # 1. Create the main horizontal row
 menu_frame = Frame(window, bg="lightyellow")
 menu_frame.place(relx=0.08, rely=0.32, relwidth=0.84)
