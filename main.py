@@ -1,264 +1,123 @@
 # ---------------------------------------------------------
-# Project Name: E.D.S's Pizza Ordering Program
-# Names: Eric Nguyen & Duke Cameron
-# Date: May 19, 2026
+# project: e.d.s's pizza ordering program
+# names: eric nguyen & duke caperon
+# date: may 19, 2026
 #
-# Description:
-# This program allows users to order a pizza by selecting
-# a size, crust type, and toppings using a Tkinter GUI.
-# The program calculates subtotal, tax, and total cost,
-# then displays a receipt on the screen.
+# details:
+# main script to run the window, variables, and glue everything together
 # ---------------------------------------------------------
 
 from tkinter import *
+from gui_left import build_left_pane
+from gui_right import build_right_pane
+from pricing import calculate_pizza, compile_receipt
 
-#window set-up
+# window setup stuff
 window = Tk()
 window.title("Pizza Ordering Program")
-window.geometry("1000x800")
-window.config(bg="lightyellow")
 
-# Pizza size variable
-# StringVar() is a special Tkinter variable that can be used with widgets
+# get screen size dynamically
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+
+# figure out 80% screen size
+width = int(screen_width * 0.8)
+height = int(screen_height * 0.8)
+
+# math to center the window
+x = int((screen_width - width) / 2)
+y = int((screen_height - height) / 2)
+
+window.geometry(f"{width}x{height}+{x}+{y}")
+window.config(bg="#FAF9F6")
+
+# variables for pizza choices
 size = StringVar()
 size.set("Medium")  # default value
 
-# Crust type variable
 crust = StringVar()
 crust.set("Hand-Tossed")  # default value
 
-# Topping variables
-extra_cheese = IntVar()
-pineapple = IntVar()
-pepperoni = IntVar()
-sausage = IntVar()
-mushrooms = IntVar()
+toppings = {
+    "Extra Cheese": IntVar(),
+    "Pepperoni": IntVar(),
+    "Sausage": IntVar(),
+    "Mushrooms": IntVar(),
+    "Pineapple": IntVar()
+}
 
-def click():
-    subtotal = 0
+# list to keep track of added pizzas
+current_order = []
 
-    # Pizza size pricing
-    if size.get() == "Small":
-        subtotal += 10.99
+# helper to write text to the scrollable box
+def update_receipt_display(text):
+    receipt_label.config(state=NORMAL)
+    receipt_label.delete("1.0", END)
+    receipt_label.insert(END, text)
+    receipt_label.config(state=DISABLED)
 
-    elif size.get() == "Medium":
-        subtotal += 12.99
-
-    elif size.get() == "Large":
-        subtotal += 14.99
-
-    #toppings list starts with cheese
-    toppings_list = ["Cheese"]
-    if extra_cheese.get() == 1:
-        subtotal += 1.25
-        toppings_list.append("Extra Cheese")
+# what happens when you click add
+def add_to_order():
+    # get dictionary of what is checked
+    toppings_states = {name: var.get() == 1 for name, var in toppings.items()}
     
-    if pineapple.get() == 1:
-        subtotal += 50
-        toppings_list.append("Pineapple")
-
-    if pepperoni.get() == 1:
-        subtotal += 1.25
-        toppings_list.append("Pepperoni")
-
-    if sausage.get() == 1:
-        subtotal += 1.25
-        toppings_list.append("Sausage")
-
-    if mushrooms.get() == 1:
-        subtotal += 1.25
-        toppings_list.append("Mushrooms")
+    # do math for this specific pizza
+    desc, price = calculate_pizza(size.get(), crust.get(), toppings_states)
     
-    # calculate total
-    tax = subtotal * 0.0875
-    total = subtotal + tax
+    # unique signature to find duplicates
+    selected_toppings = tuple(sorted(name for name, is_sel in toppings_states.items() if is_sel))
+    signature = (size.get(), crust.get(), selected_toppings)
+    
+    # see if we already added this exact pizza
+    found = False
+    for item in current_order:
+        if item["signature"] == signature:
+            item["qty"] += 1
+            found = True
+            break
+            
+    if not found:
+        current_order.append({
+            "description": desc,
+            "price_each": price,
+            "qty": 1,
+            "signature": signature
+        })
+        
+    # update receipt box with preview
+    receipt_text = compile_receipt(current_order, is_final=False)
+    update_receipt_display(receipt_text)
 
-    #make receipt
+# submit order callback
+def submit_order():
+    receipt_text = compile_receipt(current_order, is_final=True)
+    update_receipt_display(receipt_text)
+    
+    # wipe order clean for next customer
+    if current_order:
+        current_order.clear()
 
-    receipt = ""
-    receipt += "Your Reciept...\n\n"
-    receipt += f"Size: {size.get()}\n"
-    receipt += f"Crust: {crust.get()}\n"
-    receipt += f"Toppings: {', '.join(toppings_list)}\n\n"
-    receipt += f"Subtotal: ${subtotal:.2f}\n"
-    receipt += f"Tax: ${tax:.2f}\n"
-    receipt += f"Total: ${total:.2f}"
+# frames for left and right columns
+left_pane = Frame(window, bg="#FAF9F6")
+left_pane.place(relx=0.0, rely=0.0, relwidth=0.5, relheight=1.0)
 
-    # Display receipt
-    receipt_label.config(text=receipt)
+right_pane = Frame(window, bg="#FAF9F6")
+right_pane.place(relx=0.5, rely=0.0, relwidth=0.5, relheight=1.0)
 
-#menu
-photo = PhotoImage(file="menu.gif")
+# vertical line down the middle (80% height)
+divider = Frame(window, bg="grey", width=2)
+divider.place(relx=0.5, rely=0.1, relheight=0.8, anchor="n")
 
-image_label = Label(window, image=photo)
-image_label.place(relx=0.6, rely=0.2)
+# load left side widgets
+build_left_pane(left_pane)
 
-#title
-title_label = Label(
-    window,
-    text="E.D.S's Pizzeria",
-    font=("Arial", 20, "bold"), #can change font later
-    bg="lightyellow"
-)
-title_label.place(relx=0.1, rely=0.2)
-#f
-# 1. Create the main horizontal row
-menu_frame = Frame(window, bg="lightyellow")
-menu_frame.place(relx=0.08, rely=0.32, relwidth=0.84)
+# load right side widgets
+variables = {
+    "size": size,
+    "crust": crust,
+    "toppings": toppings
+}
+receipt_label = build_right_pane(right_pane, variables, add_to_order, submit_order)
 
-# 2. Divide that row into 3 equal columns
-menu_frame.columnconfigure(0, weight=1, uniform="group1")
-menu_frame.columnconfigure(1, weight=1, uniform="group1")
-menu_frame.columnconfigure(2, weight=1, uniform="group1")
-
-# 3. Create the 3 individual "column boxes"
-size_frame = Frame(menu_frame, bg="lightyellow")
-crust_frame = Frame(menu_frame, bg="lightyellow")
-toppings_frame = Frame(menu_frame, bg="lightyellow")
-
-# 4. Lock the boxes into their respective columns (0, 1, and 2)
-size_frame.grid(row=0, column=0, sticky="n")
-crust_frame.grid(row=0, column=1, sticky="n")
-toppings_frame.grid(row=0, column=2, sticky="n")
-
-size_label = Label(
-    size_frame,  # <-- 1. CHANGED TO THE SIZE FRAME
-    text="Choose Pizza Size:",
-    font=("Arial", 14, "bold"),
-    bg="lightyellow"
-)
-size_label.pack(anchor="w", pady=(0, 10))  # <-- 2. CHANGED TO PACK (Left-aligned)
-
-Radiobutton(
-    size_frame,  # <-- 1. CHANGED TO THE SIZE FRAME
-    text="Small - $10.99",
-    variable=size,
-    value="Small",
-    bg="lightyellow",
-    font=("Arial", 11)
-).pack(anchor="w", pady=3)  # <-- 2. CHANGED TO PACK (Left-aligned)
-
-Radiobutton(
-    size_frame,
-    text="Medium - $12.99",
-    variable=size,
-    value="Medium",
-    bg="lightyellow"
-).pack(anchor="w", pady=3)
-
-Radiobutton(
-    size_frame,
-    text="Large - $14.99",
-    variable=size,
-    value="Large",
-    bg="lightyellow"
-).pack(anchor="w", pady=3)
-
-# -------------------------
-# CRUST SECTION
-# -------------------------
-
-crust_label = Label(
-    crust_frame,
-    text="Choose Crust Type:",
-    font=("Arial", 14),
-    bg="lightyellow"
-)
-crust_label.pack(anchor="w", pady=(0, 10))
-
-Radiobutton(
-    crust_frame,
-    text="Hand-Tossed",
-    variable=crust,
-    value="Hand-Tossed",
-    bg="lightyellow"
-).pack(anchor="w", pady=3)
-
-Radiobutton(
-    crust_frame,
-    text="Deep-Dish",
-    variable=crust,
-    value="Deep-Dish",
-    bg="lightyellow"
-).pack(anchor="w", pady=3)
-
-Radiobutton(
-    crust_frame,
-    text="Thin-Crust",
-    variable=crust,
-    value="Thin-Crust",
-    bg="lightyellow"
-).pack(anchor="w", pady=3)
-
-# -------------------------
-# TOPPINGS SECTION
-# -------------------------
-
-toppings_label = Label(
-    size_frame,
-    text="Choose Toppings ($1.25 each):",
-    font=("Arial", 14),
-    bg="lightyellow"
-)
-toppings_label.pack(anchor="w", pady=(0, 10))
-
-Checkbutton(
-    window,
-    text="Extra Cheese",
-    variable=extra_cheese,
-    bg="lightyellow"
-).pack()
-
-Checkbutton(
-    window,
-    text="Pepperoni",
-    variable=pepperoni,
-    bg="lightyellow"
-).pack(anchor="w", pady=3)
-
-Checkbutton(
-    toppings_frame,
-    text="Sausage",
-    variable=sausage,
-    bg="lightyellow"
-).pack(anchor="w", pady=3)
-
-Checkbutton(
-    toppings_frame,
-    text="Mushrooms",
-    variable=mushrooms,
-    bg="lightyellow"
-).pack(anchor="w", pady=3)
-
-Checkbutton(
-    window,
-    text="Pineapple",
-    variable=pineapple,
-    bg="lightyellow"
-).pack(anchor="w", pady=3)
-
-
-
-submit_button = Button(
-    window,
-    text="Submit Order",
-    font=("Arial", 14),
-    command=click
-)
-submit_button.pack(pady=15)
-
-
-receipt_label = Label(
-    window,
-    text="Your receipt will appear here.",
-    font=("Courier", 12),
-    bg="white",
-    width=40,
-    height=12,
-    justify=LEFT,
-    anchor="nw",
-    relief="solid"
-)
-receipt_label.pack(pady=10)
-
+# run the main event loop
 window.mainloop()
