@@ -33,13 +33,16 @@ def calculate_pizza(size_val, crust_val, toppings_states):
     desc = f"{size_val} {crust_val} ({', '.join(toppings_list)})"
     return desc, price
 
-def compile_receipt(pizzas_list, is_final=False):
+def compile_receipt(pizzas_list, customer_name_val="", is_final=False):
     if not pizzas_list:
         return "Your order is empty.\nPlease add items first."
 
     # header stuff
-    title = "Final Receipt...\n\n" if is_final else "Your Order (Preview)...\n\n"
+    title = "Final Receipt...\n" if is_final else "Your Order (Preview)...\n"
     receipt = title
+    if customer_name_val.strip():
+        receipt += f"Customer: {customer_name_val.strip()}\n"
+    receipt += "\n"
     
     # columns for the table: items, qty, price (45 chars total)
     receipt += f"{'Items'.ljust(32)}{'QTY'.rjust(4)}{'Price'.rjust(9)}\n"

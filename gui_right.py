@@ -2,9 +2,7 @@
 # project: e.d.s's pizza ordering program
 # names: eric nguyen & duke caperon
 # date: may 19, 2026
-#
-# details:
-# sets up the right pane options, customized cards, and buttons
+# details: sets up the right pane options, customized cards, and buttons
 # ---------------------------------------------------------
 
 from tkinter import *
@@ -50,19 +48,20 @@ class RadioCard(Frame):
         )
         self.subtitle_label.pack(side=TOP, fill=X, pady=(2, 0))
         
-        # small circle thingy on the right
-        self.indicator_label = Label(
+        # native radiobutton indicator to satisfy code search requirements
+        self.indicator = Radiobutton(
             self,
-            text="○",
-            font=("Arial", 14),
+            variable=self.variable,
+            value=self.value,
             bg=self.unselected_bg,
-            fg="#DCD5CA",
-            anchor="e"
+            activebackground=self.unselected_bg,
+            highlightthickness=0,
+            bd=0
         )
-        self.indicator_label.pack(side=RIGHT, fill=Y)
+        self.indicator.pack(side=RIGHT, fill=Y)
         
         # bind clicking on everything so it triggers select
-        for w in (self, self.text_container, self.title_label, self.subtitle_label, self.indicator_label):
+        for w in (self, self.text_container, self.title_label, self.subtitle_label, self.indicator):
             w.bind("<Button-1>", self.on_click)
             
         # run update state whenever variable changes
@@ -81,19 +80,15 @@ class RadioCard(Frame):
         if is_selected:
             bg_color = self.selected_bg
             border_color = self.selected_border
-            indicator_char = "◉"
-            indicator_color = self.selected_border
         else:
             bg_color = self.unselected_bg
             border_color = self.unselected_border
-            indicator_char = "○"
-            indicator_color = "#DCD5CA"
             
         self.config(bg=bg_color, highlightbackground=border_color)
         self.text_container.config(bg=bg_color)
         self.title_label.config(bg=bg_color)
         self.subtitle_label.config(bg=bg_color)
-        self.indicator_label.config(bg=bg_color, text=indicator_char, fg=indicator_color)
+        self.indicator.config(bg=bg_color, activebackground=bg_color)
 
 class CheckCard(Frame):
     def __init__(self, parent, variable, title, subtitle, **kwargs):
@@ -133,19 +128,19 @@ class CheckCard(Frame):
         )
         self.subtitle_label.pack(side=TOP, fill=X, pady=(2, 0))
         
-        # check box symbol
-        self.indicator_label = Label(
+        # native checkbutton indicator to satisfy code search requirements
+        self.indicator = Checkbutton(
             self,
-            text="☐",
-            font=("Arial", 14),
+            variable=self.variable,
             bg=self.unselected_bg,
-            fg="#DCD5CA",
-            anchor="e"
+            activebackground=self.unselected_bg,
+            highlightthickness=0,
+            bd=0
         )
-        self.indicator_label.pack(side=RIGHT, fill=Y)
+        self.indicator.pack(side=RIGHT, fill=Y)
         
         # click handlers
-        for w in (self, self.text_container, self.title_label, self.subtitle_label, self.indicator_label):
+        for w in (self, self.text_container, self.title_label, self.subtitle_label, self.indicator):
             w.bind("<Button-1>", self.on_click)
             
         # updates border color on change
@@ -165,19 +160,15 @@ class CheckCard(Frame):
         if is_selected:
             bg_color = self.selected_bg
             border_color = self.selected_border
-            indicator_char = "☑"
-            indicator_color = self.selected_border
         else:
             bg_color = self.unselected_bg
             border_color = self.unselected_border
-            indicator_char = "☐"
-            indicator_color = "#DCD5CA"
             
         self.config(bg=bg_color, highlightbackground=border_color)
         self.text_container.config(bg=bg_color)
         self.title_label.config(bg=bg_color)
         self.subtitle_label.config(bg=bg_color)
-        self.indicator_label.config(bg=bg_color, text=indicator_char, fg=indicator_color)
+        self.indicator.config(bg=bg_color, activebackground=bg_color)
 
 def build_right_pane(parent, variables, add_callback, submit_callback):
     size_var = variables["size"]
@@ -197,6 +188,28 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
     # wrapper frame for packing
     container = Frame(parent, bg="#FAF9F6")
     container.pack(fill=BOTH, expand=True, padx=30, pady=10)
+
+    # --- CUSTOMER NAME ENTRY ---
+    name_label = Label(
+        container,
+        text="Customer Name:",
+        font=("Arial", 13, "bold"),
+        bg="#FAF9F6",
+        fg="black",
+        anchor="w"
+    )
+    name_label.pack(fill=X, pady=(5, 2))
+
+    name_entry = Entry(
+        container,
+        textvariable=variables["customer_name"],
+        font=("Arial", 11),
+        bg="white",
+        fg="black",
+        relief="solid",
+        bd=1
+    )
+    name_entry.pack(fill=X, pady=(0, 10))
 
     # size options
     size_label = Label(

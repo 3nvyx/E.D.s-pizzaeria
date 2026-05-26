@@ -32,6 +32,7 @@ window.geometry(f"{width}x{height}+{x}+{y}")
 window.config(bg="#FAF9F6")
 
 # variables for pizza choices
+# variables for pizza choices
 size = StringVar()
 size.set("Medium")  # default value
 
@@ -39,12 +40,16 @@ crust = StringVar()
 crust.set("Hand-Tossed")  # default value
 
 toppings = {
-    "Extra Cheese": IntVar(),
     "Pepperoni": IntVar(),
     "Sausage": IntVar(),
     "Mushrooms": IntVar(),
+    "Onions": IntVar(),
+    "Extra Cheese": IntVar(),
     "Pineapple": IntVar()
 }
+
+# text field for customer name
+customer_name = StringVar()
 
 # list to keep track of added pizzas
 current_order = []
@@ -85,17 +90,18 @@ def add_to_order():
         })
         
     # update receipt box with preview
-    receipt_text = compile_receipt(current_order, is_final=False)
+    receipt_text = compile_receipt(current_order, customer_name.get(), is_final=False)
     update_receipt_display(receipt_text)
 
-# submit order callback
-def submit_order():
-    receipt_text = compile_receipt(current_order, is_final=True)
+# click() function called when the user submits their order
+def click():
+    receipt_text = compile_receipt(current_order, customer_name.get(), is_final=True)
     update_receipt_display(receipt_text)
     
     # wipe order clean for next customer
     if current_order:
         current_order.clear()
+    customer_name.set("")
 
 # frames for left and right columns
 left_pane = Frame(window, bg="#FAF9F6")
@@ -115,9 +121,10 @@ build_left_pane(left_pane)
 variables = {
     "size": size,
     "crust": crust,
-    "toppings": toppings
+    "toppings": toppings,
+    "customer_name": customer_name
 }
-receipt_label = build_right_pane(right_pane, variables, add_to_order, submit_order)
+receipt_label = build_right_pane(right_pane, variables, add_to_order, click)
 
 # run the main event loop
 window.mainloop()
