@@ -91,7 +91,7 @@ def click():
 photo = PhotoImage(file="menu.gif")
 
 image_label = Label(window, image=photo)
-image_label.pack(pady=10)
+image_label.place(relx=0.6, rely=0.2)
 
 #title
 title_label = Label(
@@ -100,87 +100,107 @@ title_label = Label(
     font=("Arial", 20, "bold"), #can change font later
     bg="lightyellow"
 )
-title_label.pack()
+title_label.place(relx=0.1, rely=0.2)
+#f
+# 1. Create the main horizontal row
+menu_frame = Frame(window, bg="lightyellow")
+menu_frame.place(relx=0.08, rely=0.32, relwidth=0.84)
+
+# 2. Divide that row into 3 equal columns
+menu_frame.columnconfigure(0, weight=1, uniform="group1")
+menu_frame.columnconfigure(1, weight=1, uniform="group1")
+menu_frame.columnconfigure(2, weight=1, uniform="group1")
+
+# 3. Create the 3 individual "column boxes"
+size_frame = Frame(menu_frame, bg="lightyellow")
+crust_frame = Frame(menu_frame, bg="lightyellow")
+toppings_frame = Frame(menu_frame, bg="lightyellow")
+
+# 4. Lock the boxes into their respective columns (0, 1, and 2)
+size_frame.grid(row=0, column=0, sticky="n")
+crust_frame.grid(row=0, column=1, sticky="n")
+toppings_frame.grid(row=0, column=2, sticky="n")
 
 size_label = Label(
-    window,
+    size_frame,  # <-- 1. CHANGED TO THE SIZE FRAME
     text="Choose Pizza Size:",
-    font=("Arial", 14),
+    font=("Arial", 14, "bold"),
     bg="lightyellow"
 )
-size_label.pack()
+size_label.pack(anchor="w", pady=(0, 10))  # <-- 2. CHANGED TO PACK (Left-aligned)
 
 Radiobutton(
-    window,
+    size_frame,  # <-- 1. CHANGED TO THE SIZE FRAME
     text="Small - $10.99",
     variable=size,
     value="Small",
-    bg="lightyellow"
-).pack()
+    bg="lightyellow",
+    font=("Arial", 11)
+).pack(anchor="w", pady=3)  # <-- 2. CHANGED TO PACK (Left-aligned)
 
 Radiobutton(
-    window,
+    size_frame,
     text="Medium - $12.99",
     variable=size,
     value="Medium",
     bg="lightyellow"
-).pack()
+).pack(anchor="w", pady=3)
 
 Radiobutton(
-    window,
+    size_frame,
     text="Large - $14.99",
     variable=size,
     value="Large",
     bg="lightyellow"
-).pack()
+).pack(anchor="w", pady=3)
 
 # -------------------------
 # CRUST SECTION
 # -------------------------
 
 crust_label = Label(
-    window,
+    crust_frame,
     text="Choose Crust Type:",
     font=("Arial", 14),
     bg="lightyellow"
 )
-crust_label.pack(pady=(10, 0))
+crust_label.pack(anchor="w", pady=(0, 10))
 
 Radiobutton(
-    window,
+    crust_frame,
     text="Hand-Tossed",
     variable=crust,
     value="Hand-Tossed",
     bg="lightyellow"
-).pack()
+).pack(anchor="w", pady=3)
 
 Radiobutton(
-    window,
+    crust_frame,
     text="Deep-Dish",
     variable=crust,
     value="Deep-Dish",
     bg="lightyellow"
-).pack()
+).pack(anchor="w", pady=3)
 
 Radiobutton(
-    window,
+    crust_frame,
     text="Thin-Crust",
     variable=crust,
     value="Thin-Crust",
     bg="lightyellow"
-).pack()
+).pack(anchor="w", pady=3)
 
 # -------------------------
 # TOPPINGS SECTION
 # -------------------------
 
 toppings_label = Label(
-    window,
+    size_frame,
     text="Choose Toppings ($1.25 each):",
     font=("Arial", 14),
     bg="lightyellow"
 )
-toppings_label.pack(pady=(10, 0))
+toppings_label.pack(anchor="w", pady=(0, 10))
 
 Checkbutton(
     window,
@@ -194,28 +214,29 @@ Checkbutton(
     text="Pepperoni",
     variable=pepperoni,
     bg="lightyellow"
-).pack()
+).pack(anchor="w", pady=3)
 
 Checkbutton(
-    window,
+    toppings_frame,
     text="Sausage",
     variable=sausage,
     bg="lightyellow"
-).pack()
+).pack(anchor="w", pady=3)
 
 Checkbutton(
-    window,
+    toppings_frame,
     text="Mushrooms",
     variable=mushrooms,
     bg="lightyellow"
-).pack()
+).pack(anchor="w", pady=3)
 
 Checkbutton(
     window,
     text="Pineapple",
     variable=pineapple,
     bg="lightyellow"
-).pack()
+).pack(anchor="w", pady=3)
+
 
 
 submit_button = Button(
