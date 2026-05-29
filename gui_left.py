@@ -36,12 +36,12 @@ def build_left_pane(parent):
     )
     about_title.pack(pady=(20, 5))
 
-    # short write up about the shop
+    # our story
     about_text = (
         "Welcome to E.D.S's Pizzeria!\n\n"
         "Established in 2026 by Eric Nguyen and Duke Caperon, "
-        "we serve the finest hand-crafted pizzas made with fresh "
-        "ingredients and lots of love. Craft your perfect slice today!"
+        "you a pick a da pizza and we a make a da pizza, just for you."
+        "There is no 'money-back guarantee' because you will never be unsatisfied."
     )
     about_label = Label(
         parent,

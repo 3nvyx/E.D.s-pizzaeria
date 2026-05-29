@@ -32,7 +32,6 @@ window.geometry(f"{width}x{height}+{x}+{y}")
 window.config(bg="#FAF9F6")
 
 # variables for pizza choices
-# variables for pizza choices
 size = StringVar()
 size.set("Medium")  # default value
 
@@ -45,7 +44,7 @@ toppings = {
     "Mushrooms": IntVar(),
     "Onions": IntVar(),
     "Extra Cheese": IntVar(),
-    "Pineapple": IntVar()
+    "Pineapple": IntVar()   #do NOT pick pineapple
 }
 
 # text field for customer name

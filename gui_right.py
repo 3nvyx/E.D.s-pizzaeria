@@ -192,7 +192,7 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
     # --- CUSTOMER NAME ENTRY ---
     name_label = Label(
         container,
-        text="Customer Name:",
+        text="Enter your name: ",
         font=("Arial", 13, "bold"),
         bg="#FAF9F6",
         fg="black",
@@ -284,7 +284,7 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
 
     toppings_list = list(toppings_vars.items())
     
-    # lay out toppings in a 3-col grid
+    # lay out toppings in a 3-col grid, accounting for pineapple as a poor choice
     for idx, (name, var) in enumerate(toppings_list):
         row = idx // 3
         col = idx % 3
