@@ -18,14 +18,14 @@ def calculate_pizza(size_val, crust_val, toppings_states):
     elif size_val == "Large":
         price += 14.99
 
-    # every pizza starts with cheese
+    # every pizza starts with cheese, you may not remove it, because that is strange
     toppings_list = ["Cheese"]
     
     # loop through toppings and add prices
     for topping_name, is_selected in toppings_states.items():
         if is_selected:
             if topping_name == "Pineapple":
-                price += 50.00  # lol $50 for pineapple
+                price += 50.00  # lol $50 for pineapple # completely deserved
             else:
                 price += 1.25
             toppings_list.append(topping_name)
