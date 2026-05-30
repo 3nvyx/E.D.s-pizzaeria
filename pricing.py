@@ -67,13 +67,20 @@ def compile_receipt(pizzas_list, customer_name_val="", is_final=False):
     receipt += "-" * 45 + "\n"
     
     if is_final:
-        tax = subtotal * 0.0875
-        total = subtotal + tax
-        receipt += f"Subtotal: {''.rjust(25)}{f'${subtotal:.2f}'.rjust(9)}\n"
-        receipt += f"Tax (8.75%): {''.rjust(21)}{f'${tax:.2f}'.rjust(9)}\n"
-        receipt += f"Total: {''.rjust(28)}{f'${total:.2f}'.rjust(9)}"
+            tax = subtotal * 0.0875
+            total = subtotal + tax
+            
+            # Right-justify the label to 36 chars, and the price to 9 chars (Total = 45 chars)
+            receipt += f"{'Subtotal:':>36}{f'${subtotal:.2f}':>9}\n"
+            receipt += f"{'Tax (8.75%):':>36}{f'${tax:.2f}':>9}\n"
+            receipt += f"{'Total:':>36}{f'${total:.2f}':>9}\n\n"
+            
+            # Center the thank you message across the full 45-character width
+            receipt += f"{'Thank you for your order!':^45}"
+            
     else:
-        receipt += f"Subtotal Preview: {''.rjust(18)}{f'${subtotal:.2f}'.rjust(9)}\n\n"
-        receipt += "Press 'Submit Order' to finalize."
+        # We can apply the exact same alignment math to the preview block!
+        receipt += f"{'Subtotal Preview:':>36}{f'${subtotal:.2f}':>9}\n\n"
+        receipt += "Press 'Submit Order' to finalize.".center(45)
 
     return receipt
