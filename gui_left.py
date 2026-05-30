@@ -20,8 +20,14 @@ def build_left_pane(parent):
         lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
     )
     
-    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+    canvas_frame = canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
     canvas.configure(yscrollcommand=scrollbar.set)
+    
+    # Force the inner frame to expand to the canvas width
+    canvas.bind(
+        "<Configure>", 
+        lambda e: canvas.itemconfig(canvas_frame, width=e.width)
+    )
     
     # enable mouse wheel scrolling
     def _on_mousewheel(event):
