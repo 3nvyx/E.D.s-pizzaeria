@@ -170,7 +170,7 @@ class CheckCard(Frame):
         self.subtitle_label.config(bg=bg_color)
         self.indicator.config(bg=bg_color, activebackground=bg_color)
 
-def build_right_pane(parent, variables, add_callback, submit_callback):
+def build_right_pane(parent, variables, add_callback, submit_callback, new_order_callback):
     size_var = variables["size"]
     crust_var = variables["crust"]
     toppings_vars = variables["toppings"]
@@ -339,6 +339,14 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
         command=submit_callback
     )
     submit_button.pack(side=LEFT, padx=10)
+
+    new_order_button = Button(
+        button_row,
+        text="New Order",
+        font=("Arial", 12, "bold"),
+        command=new_order_callback
+    )
+    new_order_button.pack(side=LEFT, padx=10)
 
     receipt_label = ScrolledText(
         padding_frame,

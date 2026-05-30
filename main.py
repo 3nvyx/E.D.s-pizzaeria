@@ -102,6 +102,17 @@ def click():
         current_order.clear()
     customer_name.set("")
 
+# new_order() function resets the GUI choices and clears the order list
+def new_order():
+    if current_order:
+        current_order.clear()
+    customer_name.set("")
+    size.set("Medium")
+    crust.set("Hand-Tossed")
+    for var in toppings.values():
+        var.set(0)
+    update_receipt_display("Your receipt will appear here.")
+
 # frames for left and right columns (offset by 1px to leave room for the divider)
 left_pane = Frame(window, bg="#FAF9F6")
 left_pane.place(relx=0.0, rely=0.0, relwidth=0.5, relheight=1.0, width=-1)
@@ -119,7 +130,7 @@ variables = {
     "toppings": toppings,
     "customer_name": customer_name
 }
-receipt_label = build_right_pane(right_pane, variables, add_to_order, click)
+receipt_label = build_right_pane(right_pane, variables, add_to_order, click, new_order)
 
 # run the main event loop
 window.mainloop()
