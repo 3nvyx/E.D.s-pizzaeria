@@ -212,7 +212,7 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
 
     # --- CUSTOMER NAME ENTRY ---
     name_label = Label(
-        container,
+        padding_frame,
         text="Enter your name: ",
         font=("Arial", 13, "bold"),
         bg="#FAF9F6",
