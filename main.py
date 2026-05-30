@@ -102,16 +102,12 @@ def click():
         current_order.clear()
     customer_name.set("")
 
-# frames for left and right columns
+# frames for left and right columns (offset by 1px to leave room for the divider)
 left_pane = Frame(window, bg="#FAF9F6")
-left_pane.place(relx=0.0, rely=0.0, relwidth=0.5, relheight=1.0)
+left_pane.place(relx=0.0, rely=0.0, relwidth=0.5, relheight=1.0, width=-1)
 
 right_pane = Frame(window, bg="#FAF9F6")
-right_pane.place(relx=0.5, rely=0.0, relwidth=0.5, relheight=1.0)
-
-# vertical line down the middle (80% height)
-divider = Frame(window, bg="grey", width=2)
-divider.place(relx=0.5, rely=0.1, relheight=0.8, anchor="n")
+right_pane.place(relx=0.5, x=1, rely=0.0, relwidth=0.5, relheight=1.0, width=-1)
 
 # load left side widgets
 build_left_pane(left_pane)
