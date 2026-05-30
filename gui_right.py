@@ -195,8 +195,14 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
         lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
     )
     
-    canvas.create_window((0, 0), window=container, anchor="nw")
+    canvas_frame = canvas.create_window((0, 0), window=container, anchor="nw")
     canvas.configure(yscrollcommand=scrollbar.set)
+
+    # Whenever the canvas resizes, stretch the inner container to match its width
+    canvas.bind(
+        "<Configure>", 
+        lambda e: canvas.itemconfig(canvas_frame, width=e.width)
+    )
     
     # enable mouse wheel scrolling
     def _on_mousewheel(event):
