@@ -1,7 +1,7 @@
 # ---------------------------------------------------------
 # project: e.d.s's pizza ordering program
 # names: eric nguyen & duke caperon
-# date: may 19, 2026
+# date: may 29, 2026
 # details: sets up the right pane options, customized cards, and buttons
 # ---------------------------------------------------------
 
