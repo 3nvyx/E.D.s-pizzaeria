@@ -185,13 +185,34 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
     )
     menu_header.pack(pady=(30, 5))
 
-    # wrapper frame for packing
-    container = Frame(parent, bg="#FAF9F6")
-    container.pack(fill=BOTH, expand=True, padx=30, pady=10)
+    # create canvas and scrollbar for scrollable right pane
+    canvas = Canvas(parent, bg="#FAF9F6", highlightthickness=0)
+    scrollbar = Scrollbar(parent, orient=VERTICAL, command=canvas.yview)
+    container = Frame(canvas, bg="#FAF9F6")
+    
+    container.bind(
+        "<Configure>",
+        lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+    )
+    
+    canvas.create_window((0, 0), window=container, anchor="nw")
+    canvas.configure(yscrollcommand=scrollbar.set)
+    
+    # enable mouse wheel scrolling
+    def _on_mousewheel(event):
+        canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+    canvas.bind_all("<MouseWheel>", _on_mousewheel)
+    
+    canvas.pack(side=LEFT, fill=BOTH, expand=True)
+    scrollbar.pack(side=RIGHT, fill=Y)
+
+    # wrapper for padding
+    padding_frame = Frame(container, bg="#FAF9F6")
+    padding_frame.pack(fill=BOTH, expand=True, padx=30, pady=10)
 
     # --- CUSTOMER NAME ENTRY ---
     name_label = Label(
-        container,
+        padding_frame,
         text="Customer Name:",
         font=("Arial", 13, "bold"),
         bg="#FAF9F6",
@@ -201,7 +222,7 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
     name_label.pack(fill=X, pady=(5, 2))
 
     name_entry = Entry(
-        container,
+        padding_frame,
         textvariable=variables["customer_name"],
         font=("Arial", 11),
         bg="white",
@@ -213,7 +234,7 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
 
     # size options
     size_label = Label(
-        container,
+        padding_frame,
         text="Choose Pizza Size:",
         font=("Arial", 13, "bold"),
         bg="#FAF9F6",
@@ -222,7 +243,7 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
     )
     size_label.pack(fill=X, pady=(10, 5))
 
-    size_row = Frame(container, bg="#FAF9F6")
+    size_row = Frame(padding_frame, bg="#FAF9F6")
     size_row.pack(fill=X, pady=5)
     size_row.columnconfigure(0, weight=1, uniform="sizes")
     size_row.columnconfigure(1, weight=1, uniform="sizes")
@@ -240,7 +261,7 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
 
     # crust options
     crust_label = Label(
-        container,
+        padding_frame,
         text="Choose Crust Type:",
         font=("Arial", 13, "bold"),
         bg="#FAF9F6",
@@ -249,7 +270,7 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
     )
     crust_label.pack(fill=X, pady=(15, 5))
 
-    crust_row = Frame(container, bg="#FAF9F6")
+    crust_row = Frame(padding_frame, bg="#FAF9F6")
     crust_row.pack(fill=X, pady=5)
     crust_row.columnconfigure(0, weight=1, uniform="crusts")
     crust_row.columnconfigure(1, weight=1, uniform="crusts")
@@ -267,7 +288,7 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
 
     # toppings grid
     toppings_label = Label(
-        container,
+        padding_frame,
         text="Choose Toppings ($1.25 each):",
         font=("Arial", 13, "bold"),
         bg="#FAF9F6",
@@ -276,7 +297,7 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
     )
     toppings_label.pack(fill=X, pady=(15, 5))
 
-    toppings_row = Frame(container, bg="#FAF9F6")
+    toppings_row = Frame(padding_frame, bg="#FAF9F6")
     toppings_row.pack(fill=X, pady=5)
     toppings_row.columnconfigure(0, weight=1, uniform="toppings")
     toppings_row.columnconfigure(1, weight=1, uniform="toppings")
@@ -294,7 +315,7 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
         card.grid(row=row, column=col, padx=4, pady=4, sticky="nsew")
 
     # order actions and receipt box
-    button_row = Frame(container, bg="#FAF9F6")
+    button_row = Frame(padding_frame, bg="#FAF9F6")
     button_row.pack(pady=15)
 
     add_button = Button(
@@ -314,7 +335,7 @@ def build_right_pane(parent, variables, add_callback, submit_callback):
     submit_button.pack(side=LEFT, padx=10)
 
     receipt_label = ScrolledText(
-        container,
+        padding_frame,
         font=("Courier", 11),
         bg="white",
         fg="black",
