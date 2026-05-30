@@ -33,6 +33,57 @@ def calculate_pizza(size_val, crust_val, toppings_states):
     desc = f"{size_val} {crust_val} ({', '.join(toppings_list)})"
     return desc, price
 
+def wrap_description(desc, first_line_width=29, rest_line_width=27, indent_str="  "):
+    if len(desc) <= first_line_width:
+        return [desc]
+        
+    words = desc.split(' ')
+    lines = []
+    
+    # Wrap the first line
+    current_line = []
+    current_length = 0
+    word_idx = 0
+    
+    while word_idx < len(words):
+        word = words[word_idx]
+        space_padding = 1 if current_line else 0
+        if current_length + len(word) + space_padding <= first_line_width:
+            current_line.append(word)
+            current_length += len(word) + space_padding
+            word_idx += 1
+        else:
+            break
+            
+    if current_line:
+        lines.append(' '.join(current_line))
+    else:
+        lines.append(words[0])
+        word_idx = 1
+        
+    # Wrap subsequent lines (with indentation)
+    current_line = []
+    current_length = 0
+    
+    while word_idx < len(words):
+        word = words[word_idx]
+        space_padding = 1 if current_line else 0
+        if current_length + len(word) + space_padding <= rest_line_width:
+            current_line.append(word)
+            current_length += len(word) + space_padding
+            word_idx += 1
+        else:
+            if current_line:
+                lines.append(indent_str + ' '.join(current_line))
+            current_line = [word]
+            current_length = len(word)
+            word_idx += 1
+            
+    if current_line:
+        lines.append(indent_str + ' '.join(current_line))
+        
+    return lines
+
 def compile_receipt(pizzas_list, customer_name_val="", is_final=False):
     if not pizzas_list:
         return "Your order is empty.\nPlease add items first."
@@ -56,13 +107,15 @@ def compile_receipt(pizzas_list, customer_name_val="", is_final=False):
         total_price = price_each * qty
         subtotal += total_price
 
-        # cut off long names so columns stay aligned
-        if len(desc) > 29:
-            display_desc = desc[:26] + "..."
-        else:
-            display_desc = desc
-
-        receipt += f"{display_desc.ljust(32)}{str(qty).rjust(4)}{f'${total_price:.2f}'.rjust(9)}\n"
+        # Wrap long descriptions to make sure all toppings are shown
+        desc_lines = wrap_description(desc)
+        
+        # Add first line of description with QTY and Price aligned
+        receipt += f"{desc_lines[0].ljust(32)}{str(qty).rjust(4)}{f'${total_price:.2f}'.rjust(9)}\n"
+        
+        # Add remaining lines of description with blank QTY and Price columns
+        for extra_line in desc_lines[1:]:
+            receipt += f"{extra_line.ljust(32)}{''.rjust(4)}{''.rjust(9)}\n"
 
     receipt += "-" * 45 + "\n"
     
